@@ -17,16 +17,16 @@ Original file is located at
 
 n = float(input('Escreva um número: '))
 
-  if n > 0:
+if n > 0:
     print('Positivo')
 
-  elif n < 0:
+elif n < 0:
     print('Negativo')
 
-  else:
+else:
     print('Zero')
 
-"""## Exercício 2: Peça dois números e exiba o maior.
+## Exercício 2: Peça dois números e exiba o maior.
 
  #Digite 2 números
  #1º numero > 2º numero -> saída: 1º número
@@ -35,9 +35,7 @@ n = float(input('Escreva um número: '))
 
 
 
-"""
-
-n = float(input('Escreva o 1º número: '))
+no = float(input('Escreva o 1º número: '))
 m = float(input('Escreva o 2º número: '))
 
 print('\n')
@@ -223,14 +221,14 @@ if unidade == 'c' or unidade == 'C':
    kelvin = celsius + 273.15
 
 elif unidade == 'f' or unidade == 'F':
-   celsius = (fahrenheit - 32) * (5/9)
    fahrenheit = temperatura
+   celsius = (fahrenheit - 32) * (5/9)
    kelvin = (fahrenheit - 32) * (5/9) + 273.15
 
 elif unidade == 'k' or unidade == 'K':
+   kelvin = temperatura
    celsius = kelvin - 273.15
    fahrenheit = (kelvin - 273.15) * (9/5) + 32
-   kelvin = temperatura
 
 else:
   print('Opção inválida. Escolha C ou F ou K')
