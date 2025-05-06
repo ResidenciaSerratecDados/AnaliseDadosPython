@@ -15,18 +15,18 @@ Original file is located at
  #caso não, 0
 """
 
-n = float(input('Escreva um número: '))
+n0 = float(input('Escreva um número: '))
 
-if n > 0:
+if n0 > 0:
     print('Positivo')
 
-elif n < 0:
+elif n0 < 0:
     print('Negativo')
 
 else:
     print('Zero')
 
-## Exercício 2: Peça dois números e exiba o maior.
+"""## Exercício 2: Peça dois números e exiba o maior.
 
  #Digite 2 números
  #1º numero > 2º numero -> saída: 1º número
@@ -35,7 +35,9 @@ else:
 
 
 
-no = float(input('Escreva o 1º número: '))
+"""
+
+n = float(input('Escreva o 1º número: '))
 m = float(input('Escreva o 2º número: '))
 
 print('\n')
@@ -221,9 +223,9 @@ if unidade == 'c' or unidade == 'C':
    kelvin = celsius + 273.15
 
 elif unidade == 'f' or unidade == 'F':
-   fahrenheit = temperatura
-   celsius = (fahrenheit - 32) * (5/9)
-   kelvin = (fahrenheit - 32) * (5/9) + 273.15
+      fahrenheit = temperatura
+      celsius = (fahrenheit - 32) * (5/9)
+      kelvin = (fahrenheit - 32) * (5/9) + 273.15
 
 elif unidade == 'k' or unidade == 'K':
    kelvin = temperatura
@@ -415,6 +417,16 @@ for X in range(0,X + 1):
     mult = 5 * X
     print('5 x', X, '=', mult)
 
+for i in range(11):
+    print('5 x', i, '=', 5 * i)
+
+for i in range(1, 11):
+  print(f'{i} x {5} = {i * 5}')
+
+num = int(input('Digite um número: '))
+for i in range(1, 11):
+  print(f'{num} x {i} = {num * i}')
+
 """## Exercício 25: Imprima os 10 primeiros números da sequência de Fibonacci."""
 
 def fibonacci(n):
@@ -422,9 +434,20 @@ def fibonacci(n):
         return n
     return fibonacci(n - 1) + fibonacci(n - 2)
 
-# Example usage
 for i in range(10):
     print(fibonacci(i), end=" ")
+
+fib = [0, 1]
+for i in range(2, 10):
+    fib.append(fib[i-1] + fib[i-2])
+print(fib)
+
+
+
+fib = [0, 1]
+for _ in range(8):
+    fib.append(fib[-1] + fib[-2])
+print(fib)
 
 """## Exercício 26: Percorra uma string e imprima cada caractere."""
 
@@ -462,6 +485,17 @@ e = float(input('Digite o quinto número: '))
 soma = sum([a,b,c,d,e])
 print("\nSOMA: ",soma)
 
+soma = 0
+for i in range(5):
+    soma += float(input('Digite um número: '))
+print("\nSOMA: ",soma)
+
+soma = 0
+for _ in range(5):
+    soma += int(input('Digite um número: '))
+   # soma = soma + int(input('Digite um número: '))
+print("\nSOMA: ",soma)
+
 """## Exercício 29: Imprima todas as vogais de uma string digitada pelo usuário."""
 
 texto = input('Digite um texto: ')
@@ -469,7 +503,28 @@ for letra in texto:
   if letra in 'aeiouAEIOUáéíóúÁÉÍÓÚãõÃÕâêîôûÂÊÎÔÛÀà':
     print(letra)
 
+
+
+texto = input('Digite um texto: ').lower()
+for letra in texto:
+  if letra in 'aeiouáéíóúãõâêîôûà':
+    print(letra)
+
 """## Exercício 30: Crie um programa que peça 5 números e exiba apenas os números pares."""
+
+numeros = [5]
+for i in range(5):
+    numeros.append(int(input('Digite um número: ')))
+
+print('\n')
+for numero in numeros:
+  if numero % 2 == 0:
+    print(numero)
+
+for _ in range(5):
+  num = int(input('Digite um número: '))
+  if num % 2 == 0:
+    print(num)
 
 numeros = [5]
 for i in range(5):
@@ -563,8 +618,8 @@ print('Números Pares:',par)
 """## Exercício 41: Crie uma lista e adicione um novo elemento no final."""
 
 minha_lista = [0,1,2,3]
-minha_lista += [4,5,6,7,8,9,10]
-print(minha_lista)
+   minha_lista += [4,5,6,7,8,9,10]
+   print(minha_lista)
 
 """## Exercício 42: Verifique se um número existe dentro de uma lista."""
 
