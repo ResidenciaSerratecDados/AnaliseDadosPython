@@ -4,29 +4,6 @@ conta1 = 125489
 conta2 = 145467
 saldo1 = 19870
 saldo2 = 1480
-
-while True:
-    print('\n1-Consultar Saldo\n2-Depósito\n3-Transferência\n4-Saque\n5-Sair')
-    op= int(input('\nEscolha uma opção: '))
-    
-    if op == 1:
-       print(f'O saldo da conta 1: {saldo1}')
-    elif op == 2:
-       valor = float(input('Escolha o valor do depósito: '))
-       saldo1 += valor
-       print("Depósito realizado com sucesso.\nO saldo atual da conta 1: " + str(saldo1))
-    elif op == 3:
-       valor = float(input('Escolha o valor da transferência: '))
-       saldo1 -= valor
-       saldo2 += valor
-       print(f'Transferência realizada com sucesso!\nO saldo atual da conta 1: {saldo1}')
-    elif op == 4:
-       valor = float(input('Escolha o valor do saque: '))
-       saldo1 -= valor
-       print(f'Saque realizado com sucesso!\nO saldo atual da conta 1: {saldo1}')
-    elif op == 5:
-        print('Obrigado!!!')
-        break
     
 def exibir_menu():
     print('\n1-Consultar Saldo\n2-Depósito\n3-Transferência\n4-Saque\n5-Sair')
@@ -47,3 +24,21 @@ def transferir(valor):
     destinatario += valor
     print(f'Transferência realizada com sucesso!\nO saldo atual da conta: {saldo}')
     
+while True:
+    exibir_menu()
+    op= int(input('\nEscolha uma opção: '))
+    
+    if op == 1:
+       print(f'O saldo da conta 1: {saldo1}')
+    elif op == 2:
+       valor = float(input('Escolha o valor do depósito: '))
+       depositar(valor)
+    elif op == 3:
+       valor = float(input('Escolha o valor da transferência: '))
+       transferir(valor)
+    elif op == 4:
+       valor = float(input('Escolha o valor do saque: '))
+       sacar(valor)
+    elif op == 5:
+        print('Obrigado!!!')
+        break
