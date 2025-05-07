@@ -1,5 +1,7 @@
 #conta1 = {'conta1': 125489,'saldo1': 19870}#1
 #conta2 = {'conta2': 547839,'saldo2': 7521}#2
+conta1 = 125489
+conta2 = 145467
 saldo1 = 19870
 saldo2 = 1480
 
