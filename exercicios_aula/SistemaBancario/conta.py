@@ -1,7 +1,8 @@
 class ContaCorrente:
-    def __init__(self, numConta, saldo = 0.0):
+    def __init__(self, senha, numConta, saldo = 0.0):
         self.numConta = numConta
         self.saldo = saldo
+        self.senha = senha
         
     def consultar_saldo(self):
         print(f'O saldo da conta {self.numConta}: R$ {self.saldo:.2f}')#exibir 2 casas decimais
