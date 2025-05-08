@@ -10,14 +10,14 @@ class ContaCorrente:
     def sacar(self, valor):
         if 0 < valor <= self.saldo:
             self.saldo -= valor
-            print(f'Saque realizado com sucesso!\nO saldo atual da conta 1: {self.saldo:.2f}')
+            print(f'Saque realizado com sucesso!\nO saldo atual da conta: {self.saldo:.2f}')
         else:
             print('Saldo insuficiente ou inválido!')
             
     def depositar(self, valor):
         if valor > 0:
             self.saldo += valor
-            print(f"Depósito realizado com sucesso.\nO saldo atual da conta 1: {self.saldo:.2f}")
+            print(f'Depósito realizado com sucesso.\nO saldo atual da conta: {self.saldo:.2f}')
         else:
             print('Operação inválida.')
             

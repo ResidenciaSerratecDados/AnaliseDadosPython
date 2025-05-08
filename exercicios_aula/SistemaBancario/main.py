@@ -14,14 +14,14 @@ def login():
  
     conta = contas.get(num_conta)  
     if conta and conta.senha == senha:
-        print(f'Seja bem-vindo(a), {conta.num_conta}!')
+        print('Seja bem-vindo(a), ' + str(conta.numConta) +'!')
         return conta
     else:
-        print('Login e/ou Senha Inválidos.\nTente Novemente!')
-    
+        print('Login e/ou Senha Inválidos.\nTente Novemente!\n')
+        login()
 
 def exibir_menu():
-    print('\n1-Consultar Saldo\n2-Depósito\n3-Transferência\n4-Saque\n5-Sair')
+    print('\n1-Consultar Saldo\n2-Depósito\n3-Transferência\n4-Saque\n5-Sair\n')
 
 conta_logada = login()
 
