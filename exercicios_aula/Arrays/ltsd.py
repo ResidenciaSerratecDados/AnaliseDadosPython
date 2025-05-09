@@ -14,7 +14,7 @@ print(estados_lista) # SC, MG, AC
 
 #Tupla - lista imutável - coordenadas, lista de semanas, meses
 estados_tupla = ('SP','RJ','RJ') # Permite duplicatas
-print(estados_lista[1]) # RJ
+print(estados_tupla[1]) # RJ
 estados_tupla[1] = 'SC' # ERRO - Tuplas são imutáveis
 estados_tupla.append('AC') # ERRO - Tuplas são imutáveis
 estados_tupla.remove('SP') # ERRO - Tuplas são imutáveis
