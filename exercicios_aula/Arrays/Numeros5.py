@@ -12,11 +12,10 @@ tupla = tuple(dados)
 conjunto = set(dados)
 dicionario = {j: valor for j, valor in enumerate(dados)}
 
-print('\nLista:',lista)
-print('\nTupla:',tupla)
-print('\nConjunto:',conjunto)
-print('\nDicionário:', dicionario)
-print('\n')
+print('Lista:',lista)
+print('Tupla:',tupla)
+print('Conjunto:',conjunto)
+print('Dicionário:', dicionario)
 
 ########################## Lista, Tupla, Set, Dicionário
 
