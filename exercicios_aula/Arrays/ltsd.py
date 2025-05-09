@@ -50,13 +50,13 @@ del estados_dict['MG'] # {'SP': 'São Paulo','RJ': 'Rio de Janeiro', 'Nome': 'An
 #-Ordenado: Lista, Dicionário, Tupla
 
 #-X
-x = ['maçã','banana','uva']
+lista2 = ['maçã','banana','uva']
 
 #-Y
-y = ('maçã','banana','uva')
+tupla2 = ('maçã','banana','uva')
 
 #-W
-w = {'maçã','banana','uva'}
+conjumto2 = {'maçã','banana','uva'} #set
 
 #-Z
-z = {'nome': 'João', 'idade': 30, 'cidade': 'São Paulo'}
+dicionario2 = {'nome': 'João', 'idade': 30, 'cidade': 'São Paulo'}
