@@ -6,21 +6,16 @@ import random
 def gerar_dados(qtd, min_val, max_val):
     return [random.randint(min_val, max_val) for _ in range(qtd)]
 
-print('\nLista aleatória:')
-lista = gerar_dados(5, 1, 22)
-print(lista)
+dados = gerar_dados(5, 1, 22)
+lista = list(dados)
+tupla = tuple(dados)
+conjunto = set(dados)
+dicionario = {j: valor for j, valor in enumerate(dados)}
 
-print('\nTupla aleatória:')
-tupla = tuple(gerar_dados(5, 1, 22))
-print(tupla)
-
-print('\nConjunto aleatório:')
-conjunto = set(gerar_dados(5, 1, 22))
-print(conjunto)
-
-print('\nDicionário Aleatório:')
-dicionario = {j: valor for j, valor in enumerate(gerar_dados(5, 1, 22))}
-print(dicionario)
+print('\nLista:',lista)
+print('\nTupla:',tupla)
+print('\nConjunto:',conjunto)
+print('\nDicionário:', dicionario)
 print('\n')
 
 ########################## Lista, Tupla, Set, Dicionário
