@@ -559,6 +559,11 @@ for numero in numeros:
   mult = numero * 2
   print(str(numero) + " X " + str(2) + " = " + str(mult))
 
+numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+for numero in numeros:
+  mult = numero * 2
+  print(str(numero) + " X " + str(2) + " = " + str(mult))
+
 """## Exercício 34: Conte quantas palavras existem em uma lista de palavras."""
 
 lista_de_palavras = ['ola', 'mundo', 'em programação', 'em python']
@@ -580,6 +585,9 @@ for i in range(5):
 print('\n')
 print('Maior número:',max(numeros))
 
+numeros = [1, 2, 3, 7, 10]
+print('Maior número:',max(numeros))
+
 """## Exercício 37: Crie uma lista e inverta a ordem dos elementos."""
 
 lista = []
@@ -589,10 +597,21 @@ lista.reverse()
 print('\nLista Invertida:\n')
 print(lista)
 
+numeros = [1, 2, 3, 7, 10]
+numeros.reverse()
+print(numeros)
+
+numeros = [1, 2, 3, 7, 10]
+print(numeros[::-1])
+
 """## Exercício 38: Crie uma lista com 5 nomes e remova o último nome."""
 
 lista = ['azul', 'verde', 'ocre', 'cinza', 'violeta']
 lista.remove('violeta')
+print(lista)
+
+lista = ['azul', 'verde', 'ocre', 'cinza', 'violeta']
+lista.pop()
 print(lista)
 
 """## Exercício 39: Ordene uma lista de números."""
@@ -605,6 +624,10 @@ print('\n')
 numeros.sort()
 print('Lista em Ordem Crescente: ',numeros)
 
+numeros = [12, 211, 3, 700, 10]
+numeros.sort()
+print(numeros)
+
 """## Exercício 40: Crie uma lista com 5 números e exiba apenas os pares."""
 
 numeros = [5]
@@ -614,6 +637,13 @@ for i in range(5):
 print('\n')
 par = [i for i in numero if i % 2 == 0]
 print('Números Pares:',par)
+
+numeros = [12, 211, 3, 700, 10]
+par = [i for i in numeros if i % 2 == 0]
+print(par)
+
+numeros = [12, 211, 3, 700, 10]
+print([num for num in numeros if num % 2 == 0])
 
 """## Exercício 41: Crie uma lista e adicione um novo elemento no final."""
 

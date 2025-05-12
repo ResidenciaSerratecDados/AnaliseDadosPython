@@ -1,0 +1,16 @@
+ADD ARQUIVO
+
+git clone LinkPasta
+cd CaminhoPasta
+git add arquivo
+git commit-m "mensagem"
+git push origin main
+git branch
+git status
+
+HISTÓRICO
+
+git log
+git show numerocommit
+
+https://mange.ifrn.edu.br/python/aprenda-com-py3/capitulo_01.html
