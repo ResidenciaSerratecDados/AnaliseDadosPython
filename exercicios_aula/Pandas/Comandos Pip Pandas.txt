@@ -1,0 +1,8 @@
+COMANDOS PIP PANDAS
+
+python.exe -m pip install --upgrade pip -> atualizar e instalar pandas
+pip install -U pip --user -> atualizar pandas
+pip version -> versao pip
+pip install pandas -> instalar pandas
+pip install --upgrade pandas -> atualizar pandas
+pip list -> versões de pacotes instalados geral
