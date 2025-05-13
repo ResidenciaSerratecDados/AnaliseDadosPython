@@ -1,5 +1,5 @@
-﻿Nome;Idade;Cidade
-Ana;25;São Paulo
-Bruno;32;Rio de Janeiro
-Carlos;28;Belo Horizonte
-Daniela;45;Curitiba
+﻿Nome;Idade;Cidade;Coluna1;Coluna2;Coluna3
+Ana;25;São Paulo;;;
+Bruno;32;Rio de Janeiro;;;
+Carlos;28;Belo Horizonte;;;
+Daniela;45;Curitiba;;;
