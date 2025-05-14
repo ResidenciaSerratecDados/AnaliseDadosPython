@@ -7,7 +7,6 @@ pip install pandas -> instalar pandas
 pip install --upgrade pandas -> atualizar pandas
 pip list -> versões de pacotes instalados geral
 
-
-https://colab.research.google.com/drive/1Wmpx8Ghr6GOpuD4mD7ceQNfGiu0welCy#scrollTo=DhP287CqsekQ
+https://colab.research.google.com/drive/1qcwefxGLiSuGbelgd07zklzxdZ-XjnNr
 
 pip install -r requirements.txt -> instalar packages no requerimento
