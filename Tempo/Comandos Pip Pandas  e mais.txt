@@ -10,3 +10,12 @@ pip list -> versões de pacotes instalados geral
 https://colab.research.google.com/drive/1qcwefxGLiSuGbelgd07zklzxdZ-XjnNr
 
 pip install -r requirements.txt -> instalar packages no requerimento
+
+pip install virtualenv - instalar venv
+py -m venv .venv
+
+source ENV/bin/activate - ativar venv
+.venv\Scripts\activate
+
+ where python - verificar venv
+.venv\Scripts\python - deteminar caminho venv
