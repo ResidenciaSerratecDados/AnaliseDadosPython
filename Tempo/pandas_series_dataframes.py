@@ -179,30 +179,30 @@ temperatura_maxima = {'13/05': 21,
 
 print(temperatura_maxima)
 
-ler_base = pd.read_csv('TempoMaio25.csv', sep = ';') # Ler o arquico CSV separado por virgulas
+ler_base = pd.read_excel('TempoMaio25.xlsx') # Ler o arquico XLSX em coluna organizada
 print(ler_base)
 
 import matplotlib.pyplot as plt
 
 bermuda = ler_base['Bermuda'] # Quantidade de dias recomendados para usar bermuda - Questão 1
 qtdBermuda = (bermuda == 1).sum()
-print(qtdBermuda)
+print(str(qtdBermuda) + ' dias de uso de bermuda.')
 
 mochila = ler_base['Mochila'] # Quantidade de dias recomendados para usar mochila - Questão 2
 qtdMochila = (mochila == 1).sum()
-print(qtdMochila)
+print(str(qtdMochila) + ' dias de uso de mochila.')
 
 luva = ler_base['Luvas'] # Quantidade de dias recomendados para usar luva
 qtdLuva = (luva == 1).sum()
-print(qtdLuva)
+print(str(qtdLuva) + ' dias de uso de luvas.')
 
 casaco = ler_base['Casaco'] # Quantidade de dias recomendados para usar casaco
 qtdCasaco = (casaco == 1).sum()
-print(qtdCasaco)
+print(str(qtdCasaco) + ' dias de uso de casaco.')
 
 gorro = ler_base['Gorro'] # Quantidade de dias recomendados para usar gorro
 qtdGorro = (gorro == 1).sum()
-print(qtdGorro)
+print(str(qtdGorro) + ' dias de uso de gorro.')
 
 # Imprimir as datas que precisamos utilizar luvas e bermudas - Questão 3
 
@@ -212,29 +212,29 @@ mask = (ler_base['Bermuda'] == 1) & (ler_base['Luvas'] == 1)
 if mask.any():
     print(data[mask])
 else:
-    print('Não é necessário')
+    print('Não é necessário utilizar bermuda e luvas juntos.')
 
 pecas = ler_base.loc[4, ['Casaco', 'Gorro', 'Mochila', 'Bermuda', 'Luvas']]
 print(pecas)# Dados do dia 17/05 - Uso de Peças - Questão 4
 
 # Questão 5 - Uso de casaco será necessário entre os dia 13 e 20 de maio,
-#e somente chuva nos dias 15 e 16 de maio. Ou seja, faça sol ou chuva,
+#e somente choverá nos dias 15 e 16 de maio. Ou seja, faça sol ou chuva,
 #o uso do casaco será necessário de acordo com as temperaturas.
 
 amplitude_termica = ler_base['Amplitude_Termica']# Questão 6 - Gráfico em linha
-data = ler_base['Data']
+data = ler_base['Data'].dt.strftime("%d/%m")
 plt.plot(data, amplitude_termica)
 plt.xlabel('Data')
 plt.ylabel('Amplitude Térmica')
-plt.title('Evolução da Amplitude Térmica')
+plt.title('Amplitude Térmica Diária')
 plt.show()
 
 amplitude_termica = ler_base['Amplitude_Termica']# Questão 6 - Gráfico em barras
-data = ler_base['Data']
+data = ler_base['Data'].dt.strftime("%d/%m")
 plt.bar(data, amplitude_termica)
 plt.xlabel('Data')
 plt.ylabel('Amplitude Térmica')
-plt.title('Evolução da Amplitude Térmica')
+plt.title('Amplitude Térmica Diária')
 plt.show()
 
 itens = {
@@ -251,7 +251,7 @@ quantidade = itens['Quantidade']
 plt.plot(roupa, quantidade)
 plt.xlabel('Roupas')
 plt.ylabel('Quantidade')
-plt.title('Uso Diário de Cada Item')
+plt.title('Uso Total de Cada Item')
 plt.show()
 #Gráfico em linhas - Questão 7
 
@@ -261,9 +261,17 @@ quantidade = itens['Quantidade']
 plt.bar(roupa, quantidade)
 plt.xlabel('Roupas')
 plt.ylabel('Quantidade')
-plt.title('Uso Diário de Cada Item')
+plt.title('Uso Total de Cada Item')
 plt.show()
 #Gráfico em barras - Questão 7
+
+# Explicações
+
+#Questão 1
+#Regra 1: Temperatura Max + 1 >= 22
+#Regra 2: Temperatura Min + 1 > Média(Temperatura Min + 1)
+
+#Serie Alterada Min & Serie Alterada Max >>
 
 """# DataFrames
 
