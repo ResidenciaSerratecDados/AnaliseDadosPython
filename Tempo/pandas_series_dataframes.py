@@ -204,11 +204,22 @@ gorro = ler_base['Gorro'] # Quantidade de dias recomendados para usar gorro
 qtdGorro = (gorro == 1).sum()
 print(qtdGorro)
 
-print(ler_base.loc[4],'Casaco', 'Gorro', 'Mochila', 'Bermuda', 'Luvas')# Dados do dia 17/05 - Questão 4
+# Imprimir as datas que precisamos utilizar luvas e bermudas - Questão 3
+
+data = ler_base['Data']
+mask = (ler_base['Bermuda'] == 1) & (ler_base['Luvas'] == 1)
+
+if mask.any():
+    print(data[mask])
+else:
+    print('Não é necessário')
+
+pecas = ler_base.loc[4, ['Casaco', 'Gorro', 'Mochila', 'Bermuda', 'Luvas']]
+print(pecas)# Dados do dia 17/05 - Uso de Peças - Questão 4
 
 # Questão 5 - Uso de casaco será necessário entre os dia 13 e 20 de maio,
-#e somente chuva nos dias 15 e 16 de maio. Ou seja, com sol ou chuva,
-#usar o casaco será necessário de acordo com as temperaturas.
+#e somente chuva nos dias 15 e 16 de maio. Ou seja, faça sol ou chuva,
+#o uso do casaco será necessário de acordo com as temperaturas.
 
 amplitude_termica = ler_base['Amplitude_Termica']# Questão 6 - Gráfico em linha
 data = ler_base['Data']
@@ -253,9 +264,6 @@ plt.ylabel('Quantidade')
 plt.title('Uso Diário de Cada Item')
 plt.show()
 #Gráfico em barras - Questão 7
-
-#Fazer 3
-#Corrigir 4
 
 """# DataFrames
 
