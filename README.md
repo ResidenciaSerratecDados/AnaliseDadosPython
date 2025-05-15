@@ -9,3 +9,5 @@ Introdução ao Python: https://mange.ifrn.edu.br/python/aprenda-com-py3/capitul
 Pandas Colab: https://colab.research.google.com/drive/1Wmpx8Ghr6GOpuD4mD7ceQNfGiu0welCy#scrollTo=DhP287CqsekQ
 
 Pandas Colab Exemplos: https://colab.research.google.com/drive/1qcwefxGLiSuGbelgd07zklzxdZ-XjnNr
+
+DataFrame de Vendas: https://colab.research.google.com/drive/1AgYWQQqPnjV6bGGfNuUiI4SqXvhJbPpN
