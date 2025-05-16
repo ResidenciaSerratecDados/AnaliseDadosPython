@@ -166,7 +166,7 @@ Seu objetivo é ajudar um turista a planejar quais roupas deverá usar ou levar 
 7.   Gere um gráfico que retorne quantas vezes cada item será utilizado.
 """
 
-temperatura_maxima = {'13/05': 21,
+temperatura_max = {'13/05': 21,
                      '14/05': 20,
                      '15/05': 21,
                      '16/05': 22,
@@ -177,9 +177,9 @@ temperatura_maxima = {'13/05': 21,
                      '21/05': 25,
                      '22/05': 25}
 
-print(temperatura_maxima)
+print(temperatura_max)
 
-ler_base = pd.read_excel('TempoMaio25.xlsx') # Ler o arquico XLSX em coluna organizada
+ler_base = pd.read_excel('./TempoMaio25.xlsx') # Ler o arquico XLSX em coluna organizada
 print(ler_base)
 
 import matplotlib.pyplot as plt
@@ -266,12 +266,190 @@ plt.show()
 #Gráfico em barras - Questão 7
 
 # Explicações
+import pandas as pd
+import matplotlib.pyplot as plt
 
-#Questão 1
-#Regra 1: Temperatura Max + 1 >= 22
-#Regra 2: Temperatura Min + 1 > Média(Temperatura Min + 1)
+temperatura_minima = {'13/05': 13,
+                     '14/05': 12,
+                     '15/05': 15,
+                     '16/05': 14,
+                     '17/05': 14,
+                     '18/05': 15,
+                     '19/05': 14,
+                     '20/05': 15,
+                     '21/05': 16,
+                     '22/05': 16}
 
-#Serie Alterada Min & Serie Alterada Max >>
+temperatura_min = pd.Series(temperatura_minima)
+temperatura_min.head()
+
+temperatura_max = {'13/05': 21,
+                     '14/05': 20,
+                     '15/05': 21,
+                     '16/05': 22,
+                     '17/05': 23,
+                     '18/05': 22,
+                     '19/05': 23,
+                     '20/05': 23,
+                     '21/05': 25,
+                     '22/05': 25}
+
+# Assume temperatura_min and temperatura_max are defined as in the original notebook
+# temperatura_min = pd.Series(...)
+# temperatura_max = {'13/05': 21, ...}
+
+# Convert temperatura_max dictionary to a pandas Series with the same index as temperatura_min
+temperatura_max_series = pd.Series(temperatura_max, index=temperatura_min.index)
+print(temperatura_max_series)
+
+# Define the initial parts of the dictionary
+tabela = {
+    'dia':['13/05','14/05','15/05','16/05','17/05','18/05','19/05','20/05','21/05','22/05'],
+    'minima': [13,12,15,14,14,15,14,15,16,16],
+    'maxima': [21,20,21,22,23,22,23,23,25,25],
+    'minima1': [13+1,12+1,15+1,14+1,14+1,15+1,14+1,15+1,16+1,16+1],
+    'maxima1': [21+1,20+1,21+1,22+1,23+1,22+1,23+1,23+1,25+1,25+1], # Corrected key name
+    # Create boolean Series directly from the conditions, explicitly aligning with the intended index length
+    'casaco': (temperatura_min < 16).reset_index(drop=True),
+    'gorro': (temperatura_min < temperatura_min.mean()).reset_index(drop=True),
+    'mochila': ((temperatura_max_series - temperatura_min) >= 5).reset_index(drop=True),
+    'luvas': (temperatura_min == temperatura_min.min()).reset_index(drop=True)
+}
+
+# Now that minima1 and maxima1 are defined within the dictionary, access them by key
+# and use them to calculate the 'bermuda' boolean series.
+# Ensure the Series used for calculation have the same length as other lists
+tabela['bermuda'] = (pd.Series(tabela['maxima1']) >= 22) & (pd.Series(tabela['minima1']) > pd.Series(tabela['minima1']).min())
+
+# Convert the dictionary 'tabela' into a pandas DataFrame, explicitly setting the index
+df_tabela = pd.DataFrame(tabela).set_index('dia')
+
+# Now you can call the .head() method on the DataFrame
+print(df_tabela)
+
+bermuda1 = tabela['bermuda'] # Quantidade de dias recomendados para usar bermuda - Questão 1
+qtdBermuda1 = (bermuda1 == True).sum()
+print(str(qtdBermuda1) + ' dias de uso de bermuda.')
+
+mochila1 = tabela['mochila'] # Quantidade de dias recomendados para usar mochila - Questão 2
+qtdMochila1 = (mochila1 == True).sum()
+print(str(qtdMochila1) + ' dias de uso de mochila.')
+
+luva1 = tabela['luvas'] # Quantidade de dias recomendados para usar luva
+qtdLuva1 = (luva1 == True).sum()
+print(str(qtdLuva1) + ' dias de uso de luvas.')
+
+casaco1 = tabela['casaco'] # Quantidade de dias recomendados para usar casaco
+qtdCasaco1 = (casaco1 == True).sum()
+print(str(qtdCasaco1) + ' dias de uso de casaco.')
+
+gorro1 = tabela['gorro'] # Quantidade de dias recomendados para usar gorro
+qtdGorro1 = (gorro1 == True).sum()
+print(str(qtdGorro1) + ' dias de uso de gorro.')
+
+# Imprimir as datas que precisamos utilizar luvas e bermudas - Questão 3
+
+data = tabela['dia']
+mask = (tabela['bermuda'] == 1) & (tabela['luvas'] == 1)
+
+if mask.any():
+    print(data[mask])
+else:
+    print('Não é necessário utilizar bermuda e luvas juntos.')
+
+#Questão 4
+
+dia_buscado = '17/05'
+
+resultados = {
+    'casaco': bool(temperatura_min[dia_buscado]<16),
+    'gorro': bool(temperatura_min[dia_buscado]<temperatura_min.mean()),
+    'mochila': bool((temperatura_max[dia_buscado]-temperatura_min[dia_buscado])>=5),
+    'bermuda': bool(temperatura_max[dia_buscado]>=22 and temperatura_min[dia_buscado] > temperatura_min.min()),
+    'luvas': bool(temperatura_min[dia_buscado]==temperatura_min.min())
+}
+
+print(resultados)
+
+# Questão 5 - Uso de casaco será necessário entre os dia 13 e 20 de maio,
+#e somente choverá nos dias 15 e 16 de maio. Ou seja, faça sol ou chuva,
+#o uso do casaco será necessário de acordo com as temperaturas.
+
+
+# Define the initial parts of the dictionary
+tabla = {
+    'dia':['13/05','14/05','15/05','16/05','17/05','18/05','19/05','20/05','21/05','22/05'],
+    'minima': [13,12,15-2,14-2,14,15,14,15,16,16],
+    'maxima': [21,20,21-2,22-2,23,22,23,23,25,25],
+    'minima1': [13+1,12+1,15+1-2,14+1-2,14+1,15+1,14+1,15+1,16+1,16+1],
+    'maxima1': [21+1,20+1,21+1-2,22+1-2,23+1,22+1,23+1,23+1,25+1,25+1], # Corrected key name
+    # Create boolean Series directly from the conditions, explicitly aligning with the intended index length
+    'casaco': (temperatura_min < 16).reset_index(drop=True),
+    'gorro': (temperatura_min < temperatura_min.mean()).reset_index(drop=True),
+    'mochila': ((temperatura_max_series - temperatura_min) >= 5).reset_index(drop=True),
+    'luvas': (temperatura_min == temperatura_min.min()).reset_index(drop=True)
+}
+
+# Now that minima1 and maxima1 are defined within the dictionary, access them by key
+# and use them to calculate the 'bermuda' boolean series.
+# Ensure the Series used for calculation have the same length as other lists
+tabla['bermuda'] = (pd.Series(tabela['maxima1']) >= 22) & (pd.Series(tabela['minima1']) > pd.Series(tabela['minima1']).min())
+
+# Convert the dictionary 'tabela' into a pandas DataFrame, explicitly setting the index
+df_tabla = pd.DataFrame(tabla).set_index('dia')
+
+# Now you can call the .head() method on the DataFrame
+print(df_tabla)
+
+amplitude_termica1 = temperatura_max_series - temperatura_min
+# Questão 6 - Gráfico em linha
+# Convert the list of date strings to a pandas Series of datetime objects
+# The original list tabela['dia'] already contains the date strings in the desired format
+data1 = tabela['dia']
+plt.plot(data1, amplitude_termica1)
+plt.xlabel('Data')
+plt.ylabel('Amplitude Térmica')
+plt.title('Amplitude Térmica Diária')
+plt.show()
+
+amplitude_termica1 = temperatura_max_series - temperatura_min
+# Questão 6 - Gráfico em barra
+# Convert the list of date strings to a pandas Series of datetime objects
+# The original list tabela['dia'] already contains the date strings in the desired format
+data1 = tabela['dia']
+plt.bar(data1, amplitude_termica1)
+plt.xlabel('Data')
+plt.ylabel('Amplitude Térmica')
+plt.title('Amplitude Térmica Diária')
+plt.show()
+
+itens1 = {
+    'Roupas': ['Casaco', 'Gorro', 'Mochila', 'Bermuda', 'Luvas'],
+    'Quantidade': [qtdCasaco, qtdGorro, qtdMochila, qtdBermuda, qtdLuva]
+}
+df_itens1 = pd.DataFrame(itens1)
+print(df_itens1)
+# Impressão de tabela das quantidades de itens usados - Questão 7
+
+roupa1 = itens1['Roupas']
+quantidade1 = itens1['Quantidade']
+
+plt.plot(roupa1, quantidade1)
+plt.xlabel('Roupas')
+plt.ylabel('Quantidade')
+plt.title('Uso Total de Cada Item')
+plt.show()
+#Gráfico em linhas - Questão 7
+
+roupa1 = itens1['Roupas']
+quantidade1 = itens1['Quantidade']
+
+plt.bar(roupa1, quantidade1)
+plt.xlabel('Roupas')
+plt.ylabel('Quantidade')
+plt.title('Uso Total de Cada Item')
+plt.show()
+#Gráfico em barras - Questão 7
 
 """# DataFrames
 
@@ -281,26 +459,26 @@ plt.show()
 #Campos: ID da Transação, Codigo Cliente, Modelo, Data do Aluguel, Data de Devolução, Valor Locacao, Taxa Administrativa
 
 alugueis = [
-    (1, 1023, "Onix", "2025-01-05", "2025-01-10", 1250.00, "R$ 150,00"),
-    (2, 1045, "HB20", "2025-01-07", "2025-01-12", 1400.00, "R$ 150,00"),
-    (3, 1102, "Tracker", "2025-01-10", "2025-01-15", 1750.50, "R$ 200,00"),
-    (4, 1150, "T-Cross", "2025-01-12", "2025-01-16", 1120.75, "R$ 200,00"),
-    (5, 1201, "Civic", "2025-01-15", "2025-01-17", 800.00, "R$ 250,00"),
-    (6, 1254, "Civic", "2025-01-18", "2025-01-31", 4525.25, "R$ 250,00"),
-    (7, 1300, "L200", "2025-01-20", "2025-01-29", 4875.00, "R$ 300,00"),
-    (8, 1356, "Compass", "2025-01-22", "2025-01-28", 3400.60, "R$ 400,00"),
-    (9, 1025, "Onix", "2025-02-01", "2025-02-05", 1000.00, "R$ 150,00"),
-    (10, 1023, "HB20", "2025-02-03", "2025-02-07", 1120.00, "R$ 150,00"),
-    (11, 1122, "Tracker", "2025-02-05", "2025-02-07", 425.75, "R$ 200,00"),
-    (12, 1177, "T-Cross", "2025-02-08", "2025-02-12", 1240.50, "R$ 200,00"),
-    (13, 1225, "Civic", "2025-02-10", "2025-02-15", 1750.00, "R$ 250,00"),
-    (14, 1270, "Civic", "2025-02-12", "2025-02-17", 2000.00, "R$ 250,00"),
-    (15, 1300, "L200", "2025-02-14", "2025-02-15", 500.00, "R$ 300,00"),
-    (16, 1375, "Compass", "2025-02-16", "2025-02-21", 3600.00, "R$ 400,00"),
-    (17, 1005, "Onix", "2025-02-18", "2025-02-19", 400.00, "R$ 150,00"),
-    (18, 1150, "Tracker", "2025-02-20", "2025-02-25", 1925.00, "R$ 250,00"),
-    (19, 1105, "T-Cross", "2025-02-22", "2025-02-26", 1300.00, "R$ 200,00"),
-    (20, 1023, "Civic", "2025-02-20", "2025-02-28", 3850.00, "R$ 250,00")
+    (1, 1023, "Onix", "2025-01-05", "2025-01-10", 1250.00, 150.00),
+    (2, 1045, "HB20", "2025-01-07", "2025-01-12", 1400.00, 150.00),
+    (3, 1102, "Tracker", "2025-01-10", "2025-01-15", 1750.50, 200.00),
+    (4, 1150, "T-Cross", "2025-01-12", "2025-01-16", 1120.75, 200.00),
+    (5, 1201, "Civic", "2025-01-15", "2025-01-17", 800.00, 250.00),
+    (6, 1254, "Civic", "2025-01-18", "2025-01-31", 4525.25, 250.00),
+    (7, 1300, "L200", "2025-01-20", "2025-01-29", 4875.00, 300.00),
+    (8, 1356, "Compass", "2025-01-22", "2025-01-28", 3400.60, 400.00),
+    (9, 1025, "Onix", "2025-02-01", "2025-02-05", 1000.00, 150.00),
+    (10, 1023, "HB20", "2025-02-03", "2025-02-07", 1120.00, 150.00),
+    (11, 1122, "Tracker", "2025-02-05", "2025-02-07", 425.75, 200.00),
+    (12, 1177, "T-Cross", "2025-02-08", "2025-02-12", 1240.50, 200.00),
+    (13, 1225, "Civic", "2025-02-10", "2025-02-15", 1750.00, 250.00),
+    (14, 1270, "Civic", "2025-02-12", "2025-02-17", 2000.00, 250.00),
+    (15, 1300, "L200", "2025-02-14", "2025-02-15", 500.00, 300.00),
+    (16, 1375, "Compass", "2025-02-16", "2025-02-21", 3600.00, 400.00),
+    (17, 1005, "Onix", "2025-02-18", "2025-02-19", 400.00, 150.00),
+    (18, 1150, "Tracker", "2025-02-20", "2025-02-25", 1925.00, 250.00),
+    (19, 1105, "T-Cross", "2025-02-22", "2025-02-26", 1300.00, 200.00),
+    (20, 1023, "Civic", "2025-02-20", "2025-02-28", 3850.00, 250.00)
 ]
 
 """### Com isso, conseguimos instanciar a classe Dataframe, a partir da leitura do CSV. A partir de agora, os dados estão disponíveis para serem trabalhados em memória."""
@@ -350,7 +528,7 @@ df['valor_dia'] = (df['valor_locacao'] / df['duracao_dias']).round(2)
 
 df.head()
 
-df.groupby('modelo')['valor_dia'].mean()
+df.groupby('modelo')['valor_dia'].mean().round(2)
 
 """## **Prática**
 
@@ -411,5 +589,140 @@ A partir do conteúdo apresentado sobre DataFrames, Séries e demais conheciment
 
 
 
+---
+
+
+
 
 """
+
+#Criação de colunas
+
+# Now use the new numeric column for pd.cut()
+df['ClassificacaoDuracao'] = pd.cut(df['duracao_dias'], bins=[0, 3, 7, float('inf')], labels=['Curta', 'Média', 'Longa'])
+df['ClassificacaoTaxa'] = pd.cut(df['taxa_administrativa'], bins=[0, 0.08, 0.15, float('inf')], labels=['Baixa', 'Média', 'Alta']) # Adjusted bins based on the values
+
+# Assuming 'ValorTotal' and subsequent calculations should use the numeric tax value
+df['ValorTotal'] = (df['valor_locacao'] + df['taxa_administrativa']).round(2)
+
+# Recalculate DescontoTaxa based on the new numeric tax value
+df['DescontoTaxa'] = (df.apply(lambda row: row['taxa_administrativa'] * 0.15 if row['ClassificacaoTaxa'] == 'Alta' else 0, axis=1)).round(2)
+df['DescontoDuracao'] = (df.apply(lambda row: row['valor_locacao'] * 0.08 if row['ClassificacaoDuracao'] == 'Média' else (row['valor_locacao'] * 0.12 if row['ClassificacaoDuracao'] == 'Longa' else 0), axis=1)).round(2)
+df['DescontoTotal'] = (df['DescontoTaxa'] + df['DescontoDuracao']).round(2)
+df['ValorFinal'] = (df['ValorTotal'] - df['DescontoTotal']).round(2)
+
+# Recalculate PercentualDesconto based on ValorTotal and ValorFinal
+# Handle cases where ValorTotal is 0 to avoid division by zero
+# Ensure division by zero is handled and resulting infinite values are replaced
+df['PercentualDesconto'] = (1 - (df['ValorFinal'] / df['ValorTotal']))*100
+df['PercentualDesconto'] = df['PercentualDesconto'].replace([float('inf'), -float('inf')], 0).fillna(0).round(2)
+
+df.head(20)
+
+#Questão 1 - Porcentagem de Duração das Locações
+
+curto = df['ClassificacaoDuracao'] == 'Curta'
+ct = curto.sum()
+
+medio = df['ClassificacaoDuracao'] == 'Média'
+md = medio.sum()
+
+longo = df['ClassificacaoDuracao'] == 'Longa'
+lg = longo.sum()
+
+total_dur = ct + md + lg
+
+prazo_aluguel = {
+    'Duração': ['Curto', 'Médio', 'Longo'],
+    'Porcentagem': [str(ct/total_dur*100) + '%', str(md/total_dur*100) + '%', str(lg/total_dur*100) + '%']
+}
+
+df_prazo_aluguel = pd.DataFrame(prazo_aluguel)
+df_prazo_aluguel.head()
+
+# Questão 2 - Quem são os três clientes (Código Cliente) que mais geraram receita total no período? Quanto (R$) cada um gastou?
+
+# Group by 'cod_cliente', sum the 'ValorTotal', sort in descending order, and take the top 3
+top_clients = df.groupby('cod_cliente')['ValorTotal'].sum().sort_values(ascending=False).head(3)
+
+# Print the top 3 clients and their total revenue
+print("Top 3 clientes por receita total:")
+top_clients.head()
+
+ModeloCarros = df['modelo'].unique()
+print(ModeloCarros)
+
+#Questão 3 - Somatório dos descontos por modelo de carros
+
+DeOnix = df[df['modelo'] == 'Onix']['DescontoTotal'].sum()
+DeHB20 = df[df['modelo'] == 'HB20']['DescontoTotal'].sum()
+DeTracker = df[df['modelo'] == 'Tracker']['DescontoTotal'].sum()
+DeTcross = df[df['modelo'] == 'T-Cross']['DescontoTotal'].sum()
+DeCivic = df[df['modelo'] == 'Civic']['DescontoTotal'].sum()
+DeL200 = df[df['modelo'] == 'L200']['DescontoTotal'].sum()
+DeCompass = df[df['modelo'] == 'Compass']['DescontoTotal'].sum()
+
+tabelmodels = {
+    'Modelo': ['Onix', 'HB20', 'Tracker', 'T-Cross', 'Civic', 'L200', 'Compass'],
+    'DescontoTotal': [DeOnix, DeHB20, DeTracker, DeTcross, DeCivic, DeL200, DeCompass]
+}
+
+df_tabelmodels = pd.DataFrame(tabelmodels)
+df_tabelmodels.head(7)
+
+# Questão 4 - Ordene os aluguéis por % de desconto
+
+percentual_sorted_df = df.sort_values(by='PercentualDesconto', ascending=False)
+
+# Select only the 'PercentualDesconto' column as a Series
+percentual = percentual_sorted_df['PercentualDesconto']
+
+# The 'ValorFinal' column already is a Series
+aluguel = percentual_sorted_df['ValorFinal']
+
+table = {'%_Desconto': percentual, 'Aluguel': aluguel}
+grade = pd.DataFrame(table)
+
+grade.head(20)
+
+#Questão 5 - Média de Diárias por mês
+
+janeiro = df[df['data_aluguel'].dt.month == 1]
+fevereiro = df[df['data_aluguel'].dt.month == 2]
+janeiro_media = janeiro['ValorFinal'].mean().round(2)
+fevereiro_media = fevereiro['ValorFinal'].mean().round(2)
+
+bimestre = {
+    'Mês': ['Janeiro', 'Fevereiro'],
+    'Média de Diárias': [janeiro_media, fevereiro_media]
+}
+
+df_bimestre = pd.DataFrame(bimestre)
+df_bimestre.head()
+
+# Questão 6 - Planilha BÔNUS e suas edições para visualização quotidiana
+
+# Save the DataFrame 'df' (which contains the calculated columns) to an Excel file
+df.to_excel('./alugueis_carros_BONUS.xlsx', index=False)
+
+# Now read the newly created Excel file
+bonus = pd.read_excel('./alugueis_carros_BONUS.xlsx')
+
+# Proceed with formatting the columns in the 'bonus' DataFrame
+bonus['data_aluguel'] = bonus['data_aluguel'].dt.strftime('%d/%m/%Y')
+bonus['data_devolucao'] = bonus['data_devolucao'].dt.strftime('%d/%m/%Y')
+
+bonus['valor_locacao'] = 'R$ '+ (bonus['valor_locacao'].round(2)).astype(str)
+bonus['taxa_administrativa'] = 'R$ '+ (bonus['taxa_administrativa'].round(2)).astype(str)
+bonus['valor_dia'] = 'R$ '+ (bonus['valor_dia'].round(2)).astype(str)
+bonus['ValorTotal'] = 'R$ '+ (bonus['ValorTotal'].round(2)).astype(str)
+bonus['duracao_dias'] = bonus['duracao_dias'].astype(str) + ' dias'
+bonus['DescontoTaxa'] = 'R$ '+ (bonus['DescontoTaxa'].round(2)).astype(str)
+bonus['DescontoDuracao'] = 'R$ '+ (bonus['DescontoDuracao'].round(2)).astype(str)
+bonus['DescontoTotal'] = 'R$ '+ (bonus['DescontoTotal'].round(2)).astype(str)
+bonus['ValorFinal'] = 'R$ '+ (bonus['ValorFinal'].round(2)).astype(str)
+
+bonus['PercentualDesconto']=(bonus['PercentualDesconto']*100).replace([float('inf'), -float('inf')], 0).fillna(0).round(2)
+bonus['PercentualDesconto'] = bonus['PercentualDesconto'].astype(str) + '%'
+
+bonus.head(20)
