@@ -632,9 +632,13 @@ lg = longo.sum()
 
 total_dur = ct + md + lg
 
-print('Porcentagem de Aluguéis de Curto Prazo: ' + str(ct/total_dur*100) + '%')
-print('Porcentagem de Aluguéis de Médio Prazo: ' + str(md/total_dur*100) + '%')
-print('Porcentagem de Aluguéis de Longo Prazo: ' + str(lg/total_dur*100) + '%')
+prazo_aluguel = {
+    'Duração': ['Curto', 'Médio', 'Longo'],
+    'Porcentagem': [str(ct/total_dur*100) + '%', str(md/total_dur*100) + '%', str(lg/total_dur*100) + '%']
+}
+
+df_prazo_aluguel = pd.DataFrame(prazo_aluguel)
+df_prazo_aluguel.head()
 
 # Questão 2 - Quem são os três clientes (Código Cliente) que mais geraram receita total no período? Quanto (R$) cada um gastou?
 
@@ -643,7 +647,7 @@ top_clients = df.groupby('cod_cliente')['ValorTotal'].sum().sort_values(ascendin
 
 # Print the top 3 clients and their total revenue
 print("Top 3 clientes por receita total:")
-print(top_clients)
+top_clients.head()
 
 ModeloCarros = df['modelo'].unique()
 print(ModeloCarros)
@@ -664,7 +668,7 @@ tabelmodels = {
 }
 
 df_tabelmodels = pd.DataFrame(tabelmodels)
-print(df_tabelmodels)
+df_tabelmodels.head(7)
 
 # Questão 4 - Ordene os aluguéis por % de desconto
 
@@ -679,7 +683,7 @@ aluguel = percentual_sorted_df['ValorFinal']
 table = {'%_Desconto': percentual, 'Aluguel': aluguel}
 grade = pd.DataFrame(table)
 
-print(grade)
+grade.head(20)
 
 #Questão 5 - Média de Diárias por mês
 
@@ -688,8 +692,13 @@ fevereiro = df[df['data_aluguel'].dt.month == 2]
 janeiro_media = janeiro['ValorFinal'].mean().round(2)
 fevereiro_media = fevereiro['ValorFinal'].mean().round(2)
 
-print('Média do Valor por Locação em Janeiro: R$ ' + str(janeiro_media))
-print('Média do Valor por Locação em Fevereiro: R$ ' + str(fevereiro_media))
+bimestre = {
+    'Mês': ['Janeiro', 'Fevereiro'],
+    'Média de Diárias': [janeiro_media, fevereiro_media]
+}
+
+df_bimestre = pd.DataFrame(bimestre)
+df_bimestre.head()
 
 # Questão 6 - Planilha BÔNUS e suas edições para visualização quotidiana
 
