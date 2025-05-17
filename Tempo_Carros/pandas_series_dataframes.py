@@ -690,10 +690,13 @@ janeiro = df[df['data_aluguel'].dt.month == 1]
 fevereiro = df[df['data_aluguel'].dt.month == 2]
 janeiro_media = janeiro['ValorFinal'].mean().round(2)
 fevereiro_media = fevereiro['ValorFinal'].mean().round(2)
+qtjaneiro = janeiro['ValorFinal'].count()
+qtfevereiro = fevereiro['ValorFinal'].count()
 
 bimestre = {
     'Mês': ['Janeiro', 'Fevereiro'],
-    'Média de Diárias': [janeiro_media, fevereiro_media]
+    'Média de Diárias': [janeiro_media, fevereiro_media],
+    'Quantidade de Aluguéis': [qtjaneiro, qtfevereiro]
 }
 df_bimestre = pd.DataFrame(bimestre)
 df_bimestre.head()
