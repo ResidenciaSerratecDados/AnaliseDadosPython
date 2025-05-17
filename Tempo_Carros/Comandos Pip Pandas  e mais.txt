@@ -19,3 +19,16 @@ source ENV/bin/activate - ativar venv
 
  where python - verificar venv
 .venv\Scripts\python - deteminar caminho venv
+
+Colab:
+.dtype
+.shape
+.zeros
+.ones
+.empty
+.arange
+.random
+.split 
+.reshape
+.concatenate
+.describe
