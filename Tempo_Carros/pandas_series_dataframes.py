@@ -596,26 +596,27 @@ A partir do conteúdo apresentado sobre DataFrames, Séries e demais conheciment
 
 """
 
-#Criação de colunas
-
-# Now use the new numeric column for pd.cut()
-df['ClassificacaoDuracao'] = pd.cut(df['duracao_dias'], bins=[0, 3, 7, float('inf')], labels=['Curta', 'Média', 'Longa'])
-df['ClassificacaoTaxa'] = pd.cut(df['taxa_administrativa'], bins=[0, 0.08, 0.15, float('inf')], labels=['Baixa', 'Média', 'Alta']) # Adjusted bins based on the values
-
-# Assuming 'ValorTotal' and subsequent calculations should use the numeric tax value
+# Criação de colunas
+df['ClassificacaoDuracao'] = df['duracao_dias'].apply(lambda x: 'Curta' if x <= 3 else ('Média' if 3 < x <= 7 else 'Longa'))
 df['ValorTotal'] = (df['valor_locacao'] + df['taxa_administrativa']).round(2)
+df['ClassificacaoTaxa'] = df.apply(lambda row: 'Baixa' if row['taxa_administrativa']/row['valor_locacao'] < 0.08 else ('Média' if 0.08 <= row['taxa_administrativa']/row['valor_locacao'] <= 0.15 else 'Alta'), axis=1)
 
-# Recalculate DescontoTaxa based on the new numeric tax value
-df['DescontoTaxa'] = (df.apply(lambda row: row['taxa_administrativa'] * 0.15 if row['ClassificacaoTaxa'] == 'Alta' else 0, axis=1)).round(2)
-df['DescontoDuracao'] = (df.apply(lambda row: row['valor_locacao'] * 0.08 if row['ClassificacaoDuracao'] == 'Média' else (row['valor_locacao'] * 0.12 if row['ClassificacaoDuracao'] == 'Longa' else 0), axis=1)).round(2)
+df['DescontoTaxa'] = 0.0 # Initialize the column with 0
+df.loc[df['ClassificacaoTaxa'] == 'Alta', 'DescontoTaxa'] = df['taxa_administrativa'] - (df['valor_locacao'] * 0.15) #Desconto de 15% para taxa classificada como alta
+
+# Initialize the column with 0
+df['DescontoDuracao'] = 0.0
+df.loc[df['ClassificacaoDuracao'] == 'Longa', 'DescontoDuracao'] = df['valor_locacao'] * 0.12 #Duração de 12% para duração classificada como longa
+df.loc[df['ClassificacaoDuracao'] == 'Média', 'DescontoDuracao'] = df['valor_locacao'] * 0.08 #Duração de 8% para duração classificada como média
+
+#Conversão dos cálculos para 2 casas decimais
+df['DescontoTaxa'] = (df['DescontoTaxa']).round(2)
+df['DescontoDuracao'] = (df['DescontoDuracao']).round(2)
 df['DescontoTotal'] = (df['DescontoTaxa'] + df['DescontoDuracao']).round(2)
 df['ValorFinal'] = (df['ValorTotal'] - df['DescontoTotal']).round(2)
 
-# Recalculate PercentualDesconto based on ValorTotal and ValorFinal
-# Handle cases where ValorTotal is 0 to avoid division by zero
-# Ensure division by zero is handled and resulting infinite values are replaced
-df['PercentualDesconto'] = (1 - (df['ValorFinal'] / df['ValorTotal']))*100
-df['PercentualDesconto'] = df['PercentualDesconto'].replace([float('inf'), -float('inf')], 0).fillna(0).round(2)
+# Calculo de porcentagem
+df['PercentualDesconto'] = ((df['DescontoTotal'] / df['ValorTotal'])*100).round(2)
 
 df.head(20)
 
@@ -636,16 +637,20 @@ prazo_aluguel = {
     'Duração': ['Curto', 'Médio', 'Longo'],
     'Porcentagem': [str(ct/total_dur*100) + '%', str(md/total_dur*100) + '%', str(lg/total_dur*100) + '%']
 }
-
 df_prazo_aluguel = pd.DataFrame(prazo_aluguel)
 df_prazo_aluguel.head()
 
+prazo_aluguel = {
+    'Duração': ['Curto', 'Médio', 'Longo'],
+    'Porcentagem': [(ct/total_dur*100), (md/total_dur*100), (lg/total_dur*100)]
+}
+df_prazo_aluguel = pd.DataFrame(prazo_aluguel)
+df_prazo_aluguel.plot(kind='pie',y='Porcentagem',xlabel='Duração')
+
 # Questão 2 - Quem são os três clientes (Código Cliente) que mais geraram receita total no período? Quanto (R$) cada um gastou?
 
-# Group by 'cod_cliente', sum the 'ValorTotal', sort in descending order, and take the top 3
+# Agrupar os 3 maiores clientes consumidores
 top_clients = df.groupby('cod_cliente')['ValorTotal'].sum().sort_values(ascending=False).head(3)
-
-# Print the top 3 clients and their total revenue
 print("Top 3 clientes por receita total:")
 top_clients.head()
 
@@ -666,23 +671,17 @@ tabelmodels = {
     'Modelo': ['Onix', 'HB20', 'Tracker', 'T-Cross', 'Civic', 'L200', 'Compass'],
     'DescontoTotal': [DeOnix, DeHB20, DeTracker, DeTcross, DeCivic, DeL200, DeCompass]
 }
-
 df_tabelmodels = pd.DataFrame(tabelmodels)
 df_tabelmodels.head(7)
 
-# Questão 4 - Ordene os aluguéis por % de desconto
+# Questão 4 - Ordene os aluguéis por % de desconto indexados
 
 percentual_sorted_df = df.sort_values(by='PercentualDesconto', ascending=False)
-
-# Select only the 'PercentualDesconto' column as a Series
 percentual = percentual_sorted_df['PercentualDesconto']
-
-# The 'ValorFinal' column already is a Series
 aluguel = percentual_sorted_df['ValorFinal']
 
 table = {'%_Desconto': percentual, 'Aluguel': aluguel}
 grade = pd.DataFrame(table)
-
 grade.head(20)
 
 #Questão 5 - Média de Diárias por mês
@@ -696,19 +695,15 @@ bimestre = {
     'Mês': ['Janeiro', 'Fevereiro'],
     'Média de Diárias': [janeiro_media, fevereiro_media]
 }
-
 df_bimestre = pd.DataFrame(bimestre)
 df_bimestre.head()
 
 # Questão 6 - Planilha BÔNUS e suas edições para visualização quotidiana
 
-# Save the DataFrame 'df' (which contains the calculated columns) to an Excel file
-df.to_excel('./alugueis_carros_BONUS.xlsx', index=False)
+df.to_excel('./alugueis_carros_BONUS.xlsx', index=False) #indexação da planilha anexada
+bonus = pd.read_excel('./alugueis_carros_BONUS.xlsx') #Leitura da planilha
 
-# Now read the newly created Excel file
-bonus = pd.read_excel('./alugueis_carros_BONUS.xlsx')
-
-# Proceed with formatting the columns in the 'bonus' DataFrame
+#Formatação das colunas do dataframe
 bonus['data_aluguel'] = bonus['data_aluguel'].dt.strftime('%d/%m/%Y')
 bonus['data_devolucao'] = bonus['data_devolucao'].dt.strftime('%d/%m/%Y')
 
@@ -722,7 +717,6 @@ bonus['DescontoDuracao'] = 'R$ '+ (bonus['DescontoDuracao'].round(2)).astype(str
 bonus['DescontoTotal'] = 'R$ '+ (bonus['DescontoTotal'].round(2)).astype(str)
 bonus['ValorFinal'] = 'R$ '+ (bonus['ValorFinal'].round(2)).astype(str)
 
-bonus['PercentualDesconto']=(bonus['PercentualDesconto']*100).replace([float('inf'), -float('inf')], 0).fillna(0).round(2)
-bonus['PercentualDesconto'] = bonus['PercentualDesconto'].astype(str) + '%'
+bonus['PercentualDesconto'] = bonus['PercentualDesconto'].astype(str).round(2) + '%'
 
 bonus.head(20)
