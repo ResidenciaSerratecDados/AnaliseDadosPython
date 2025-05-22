@@ -11,9 +11,3 @@ Pandas Colab: https://colab.research.google.com/drive/1Wmpx8Ghr6GOpuD4mD7ceQNfGi
 Pandas Colab Exemplos: https://colab.research.google.com/drive/1qcwefxGLiSuGbelgd07zklzxdZ-XjnNr
 
 DataFrame de Futebol: https://colab.research.google.com/drive/1AgYWQQqPnjV6bGGfNuUiI4SqXvhJbPpN
-
-Operações Matemáticas e SQL no Colab: https://dontpad.com/analise_senac
-
-Ferramenta de armazenamento de arquivos SQL online: https://sqliteonline.com/
-
-PandasBD Colab: https://colab.research.google.com/drive/11wUDcGD33wWnmdqm7iFtcJrTe09SsoFK#scrollTo=-Mbv27ZQEoiw
