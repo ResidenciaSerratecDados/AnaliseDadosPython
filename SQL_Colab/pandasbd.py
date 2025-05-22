@@ -64,3 +64,52 @@ print(dados)
 
 dados['Margem %'] = np.round((dados['Lucro (R$)']/ dados['Vendas (R$)']) * 100, 1) #Arredondamento para 1 casa decimal
 print(dados)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+carteira_A = [0.01, 0.02, -0.015, 0.03, 0.005]
+variancia_A = np.var(carteira_A)
+print('Variância:', variancia_A)
+desvio_padrao_A = np.std(carteira_A)
+print('Desvio padrão:', desvio_padrao_A)
+
+#criar carteiras, e imprima a variância e os desvio padrão
+
+carteira_B = [0.012, 0.015, -0.01, 0.025, 0.008]
+carteira_C = [0.1, 0.025, 0.02, 0.025, 0.027, 0.03]
+carteira_D = [0.1, 0.027, 0.03, 0.0225, 0.023, 0.03]
+carteira_E = [0.1, 0.02, 0.03, 0.04, 0.05, 0.06]
+carteira_F = [-0.1, -0.02, -0.03, -0.035, -0.04, -0.055]
+
+#VARIÂNCIAS
+print('Variância Carteira B:', np.var(carteira_B))
+print('Variância Carteira C:', np.var(carteira_C))
+print('Variância Carteira D:', np.var(carteira_D))
+print('Variância Carteira E:', np.var(carteira_E))
+print('Variância Carteira F:', np.var(carteira_F))
+
+#DESVIO PADRÃO
+print('Desvio padrão Carteira B:', np.std(carteira_B))
+print('Desvio padrão Carteira C:', np.std(carteira_C))
+print('Desvio padrão Carteira D:', np.std(carteira_D))
+print('Desvio padrão Carteira E:', np.std(carteira_E))
+print('Desvio padrão Carteira F:', np.std(carteira_F))
+
+#COVARIÂNCIA
+CovariaciaAB = np.cov(carteira_A, carteira_B, bias=True)[0][1]
+Covariacia_AB = np.cov(carteira_A, carteira_B, bias=False)[0][1]
+print("Covariância entre A e B:",CovariaciaAB)
+print("Covariância entre A e B:",Covariacia_AB)
+
+'''Imprima as seguintes covariancias:
+
+Entre C e D populacional
+Entre E e F por amostragem'''
+
+Covariancia_Amostral_CD = np.cov(carteira_C, carteira_D)
+n = len(carteira_C)
+Covariancia_Populacional_CD = Covariancia_Amostral_CD[0, 1] * (n - 1) / n
+Covariancia_Amostral_EF = np.cov(carteira_E, carteira_F, bias=True)[0][1]
+print("Covariância entre C e D populacional:",Covariancia_Populacional_CD)
+print("Covariância entre E e F por amostragem:",Covariancia_Amostral_EF)
